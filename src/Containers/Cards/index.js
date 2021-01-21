@@ -10,7 +10,7 @@ const CARD_STRINGS = [
   'string5',
   'string6',
 ];
-const CARD_OFFSET = 0;
+// const CARD_OFFSET = 10;
 const SCALE_FACTOR = 0.06;
 
 const Cards = () => {
@@ -30,12 +30,12 @@ const Cards = () => {
               key={string}
               style={{ ...cardStyle, cursor: canDrag ? 'grab' : 'auto' }}
               animate={{
-                top: index * -CARD_OFFSET,
+                // top: index * -CARD_OFFSET,
                 scale: 1 - index * SCALE_FACTOR,
                 zIndex: CARD_STRINGS.length - index,
               }}
-              drag={canDrag ? 'y' : false}
-              dragConstraints={{ top: 0, bottom: 0 }}
+              drag={canDrag ? 'x' : false}
+              dragConstraints={{ left: 0, right: 0 }}
               onDragEnd={() => moveToEnd(index)}
             >
               <h2 style={textStyle}>{string}</h2>
@@ -57,8 +57,9 @@ const wrapperStyle = {
 
 const cardWrapStyle = {
   position: 'relative',
-  width: '220px',
-  height: '350px',
+  width: '300px',
+  height: '500px',
+  top: '-80px',
 };
 
 const cardStyle = {
@@ -66,12 +67,12 @@ const cardStyle = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  width: '220px',
-  height: '350px',
+  width: '300px',
+  height: '500px',
   borderRadius: '8px',
   transformOrigin: 'top center',
   listStyle: 'none',
-  border: '1px solid black',
+  // border: '1px solid black',
   backgroundColor: 'purple',
 };
 
