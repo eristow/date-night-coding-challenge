@@ -1,0 +1,35 @@
+{
+    "paths": [
+        {
+            "name": "/questions",
+            "lambdaFunction": "dateNightBackend",
+            "privacy": {
+                "open": true
+            },
+            "policyResourceName": "/questions"
+        }
+    ],
+    "resourceName": "dateNightApi",
+    "apiName": "dateNightApi",
+    "functionArns": [
+        {
+            "lambdaFunction": "dateNightBackend"
+        }
+    ],
+    "privacy": {
+        "auth": 0,
+        "unauth": 0,
+        "authRoleName": "amplify-datenight-dev-163552-authRole",
+        "unAuthRoleName": "amplify-datenight-dev-163552-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "dateNightBackend",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ]
+}
