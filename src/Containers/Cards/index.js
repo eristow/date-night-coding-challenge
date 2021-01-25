@@ -1,34 +1,24 @@
 import { useState, useEffect, Fragment } from 'react';
-import { Box, Heading } from '@chakra-ui/react';
-// import arrayMove from 'array-move';
+import { List, Box, Button, Heading } from '@chakra-ui/react';
 import { API } from 'aws-amplify';
 
-import Deck from './Deck';
+import Card from './Card';
+
+const TIMEOUT_VALUE = 300;
 
 const Cards = () => {
   const [questions, setQuestions] = useState(null);
+  const [baseDeck, setBaseDeck] = useState([]);
   const [discarded, setDiscarded] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const moveToDiscarded = (questionToRemove, index) => {
-    const currentCard = localStorage.getItem('currentCard');
-    localStorage.setItem('currentCard', Number(currentCard) + 1);
-    // setCards(arrayMove(cards, index, cards.length - 1));
-    setQuestions(questions.filter(question => question !== questionToRemove));
-    setDiscarded([questions[index], ...discarded]);
-  };
-
-  const moveToQuestions = (questionToMove, index) => {
-    const currentCard = localStorage.getItem('currentCard');
-    localStorage.setItem('currentCard', Number(currentCard) - 1);
-    setDiscarded(discarded.filter(question => question !== questionToMove));
-    setQuestions([discarded[index], ...questions]);
-  };
+  const [animateQuestions, setAnimateQuestions] = useState(false);
+  const [animateDiscarded, setAnimateDiscarded] = useState(false);
 
   useEffect(() => {
     const getQuestions = async () => {
       const data = await API.get('dateNightApi', '/questions');
-      setQuestions(data.questions);
+      setBaseDeck([...data.questions]);
+      setQuestions([...data.questions]);
     };
 
     try {
@@ -52,22 +42,80 @@ const Cards = () => {
     }
   }, [questions]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const moveToDiscarded = questionToRemove => {
+    const currentCard = Number(localStorage.getItem('currentCard')) + 1;
+    localStorage.setItem('currentCard', currentCard);
+
+    setAnimateQuestions(true);
+    setTimeout(() => {
+      setDiscarded([questions[0], ...discarded]);
+      setQuestions(questions.filter(question => question !== questionToRemove));
+      setAnimateQuestions(false);
+    }, TIMEOUT_VALUE);
+  };
+
+  const moveToQuestions = questionToMove => {
+    const currentCard = Number(localStorage.getItem('currentCard')) - 1;
+    localStorage.setItem('currentCard', currentCard);
+
+    setAnimateDiscarded(true);
+    setTimeout(() => {
+      setQuestions([discarded[0], ...questions]);
+      setDiscarded(discarded.filter(question => question !== questionToMove));
+      setAnimateDiscarded(false);
+    }, TIMEOUT_VALUE);
+  };
+
+  const resetDeck = () => {
+    setQuestions(baseDeck);
+    setDiscarded([]);
+    localStorage.setItem('currentCard', 0);
+  };
+
   return (
     <Fragment>
-      <Heading>Swipe left on the deck to see the next card.</Heading>
+      <Heading>Click on the deck to see the next card.</Heading>
       {loading ? (
         <Heading>LOADING...</Heading>
       ) : (
-        <Box
-          position="relative"
-          display="flex"
-          alignItems="center"
-          justifyContent="space-between"
-          height="100vh"
-          paddingX="100px"
-        >
-          <Deck cards={discarded} moveTo={moveToQuestions} />
-          <Deck cards={questions} moveTo={moveToDiscarded} />
+        <Box>
+          <Box
+            position="relative"
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+            height="80vh"
+            maxWidth="1000px"
+            marginX="auto"
+            paddingX="100px"
+          >
+            <List position="relative" width="350px" height="600px">
+              {discarded.map((card, index) => (
+                <Card
+                  key={`discard ${card}`}
+                  cardString={card}
+                  index={index}
+                  moveTo={moveToQuestions}
+                  discarded
+                  shouldAnimate={animateDiscarded}
+                />
+              ))}
+            </List>
+            <List position="relative" width="350px" height="600px">
+              {questions.map((card, index) => (
+                <Card
+                  key={`question ${card}`}
+                  cardString={card}
+                  index={index}
+                  moveTo={moveToDiscarded}
+                  shouldAnimate={animateQuestions}
+                />
+              ))}
+            </List>
+          </Box>
+          <Button size="lg" onClick={resetDeck}>
+            Reset Deck
+          </Button>
         </Box>
       )}
     </Fragment>

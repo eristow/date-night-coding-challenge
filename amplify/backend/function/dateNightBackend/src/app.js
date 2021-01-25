@@ -30,7 +30,7 @@ app.get('/questions', function (req, res) {
   // Add your code here
   // res.json({success: 'get call succeed!', url: req.url});
   const questions = [
-    'What would you do if had enough money to not need a job?',
+    'What would you do if you had enough money to not need a job?',
     'What are some accomplishments that you are really proud of?',
     'If you could give everyone just one piece of advice, what would it be?',
     'How have you changed from when you were in high school?',
