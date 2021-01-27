@@ -43,6 +43,7 @@ const Cards = () => {
   }, [questions]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const moveToDiscarded = questionToRemove => {
+    // console.log('moveToDiscarded:', questionToRemove);
     const currentCard = Number(localStorage.getItem('currentCard')) + 1;
     localStorage.setItem('currentCard', currentCard);
 
@@ -55,6 +56,7 @@ const Cards = () => {
   };
 
   const moveToQuestions = questionToMove => {
+    // console.log('moveToDiscarded:', questionToMove);
     const currentCard = Number(localStorage.getItem('currentCard')) - 1;
     localStorage.setItem('currentCard', currentCard);
 
@@ -71,6 +73,9 @@ const Cards = () => {
     setDiscarded([]);
     localStorage.setItem('currentCard', 0);
   };
+
+  // console.log('discarded:', discarded);
+  // console.log('questions:', questions);
 
   return (
     <Fragment>
@@ -90,7 +95,7 @@ const Cards = () => {
             paddingX="100px"
           >
             <List position="relative" width="350px" height="600px">
-              {discarded.map((card, index) => (
+              {discarded.reverse().map((card, index) => (
                 <Card
                   key={`discard ${card}`}
                   cardString={card}

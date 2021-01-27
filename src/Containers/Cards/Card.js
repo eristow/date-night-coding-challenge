@@ -1,4 +1,4 @@
-import { List, Heading } from '@chakra-ui/react';
+import { Heading } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 
 const DECK_DISTANCE = 450;
@@ -6,16 +6,17 @@ const ANIMATION_DURATION = 0.3;
 const QUESTIONS_COLOR = '#8e4585';
 const QUESTIONS_BORDER = '#45858e';
 const DISCARDED_COLOR = '#808080';
-const DISCARDED_BORDER = '#808080';
+const DISCARDED_BORDER = '#606060';
 const ANIMATION_TYPE = 'spring';
 const EASE_TYPE = 'easeOut';
+const CARD_OFFSET = 3;
 
 const variants = {
-  animate: ({discarded, index}) => ({
+  animate: ({ discarded, index }) => ({
     x: discarded ? DECK_DISTANCE : -DECK_DISTANCE,
     backgroundColor: discarded ? QUESTIONS_COLOR : DISCARDED_COLOR,
     borderColor: discarded ? QUESTIONS_BORDER : DISCARDED_BORDER,
-    zIndex: 999-index,
+    zIndex: 1000,
     transition: {
       type: ANIMATION_TYPE,
       ease: EASE_TYPE,
@@ -25,34 +26,41 @@ const variants = {
       mass: 0.2,
       stiffness: 200,
     },
+    top: index * -CARD_OFFSET,
   }),
-  stop: {},
+  stop: ({ discarded, index }) => ({
+    top: index * -CARD_OFFSET,
+    zIndex: discarded ? 999 - index : 599 - index,
+  }),
 };
 
-const Card = ({ cardString, index, moveTo, discarded = false, shouldAnimate }) => {
-  // return cardString ? (
+const Card = ({
+  cardString,
+  index,
+  moveTo,
+  discarded = false,
+  shouldAnimate,
+}) => {
+  // console.log(discarded, index, cardString);
   return (
     <motion.li
       style={cardStyle}
-      custom={{discarded, index}}
+      custom={{ discarded, index }}
       variants={variants}
-      animate={shouldAnimate ? 'animate' : 'stop'}
+      animate={index === 0 && shouldAnimate ? 'animate' : 'stop'}
       initial={{
         x: 0,
-        zIndex: 999-index,
+        zIndex: discarded ? 999 - index : 599 - index,
         backgroundColor: discarded ? DISCARDED_COLOR : QUESTIONS_COLOR,
         borderColor: discarded ? DISCARDED_BORDER : QUESTIONS_BORDER,
       }}
-      onClick={() => moveTo(cardString)}
+      onClick={index === 0 ? () => moveTo(cardString) : () => {}}
     >
       <Heading color="black" size="lg">
         {cardString}
       </Heading>
     </motion.li>
   );
-  // ) : (
-  //   <List></List>
-  // );
 };
 
 const cardStyle = {
