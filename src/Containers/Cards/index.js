@@ -4,7 +4,7 @@ import { API } from 'aws-amplify';
 
 import Card from './Card';
 
-const TIMEOUT_VALUE = 300;
+const TIMEOUT_VALUE = 250;
 
 const Cards = () => {
   const [questions, setQuestions] = useState(null);
@@ -43,28 +43,26 @@ const Cards = () => {
   }, [questions]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const moveToDiscarded = questionToRemove => {
-    // console.log('moveToDiscarded:', questionToRemove);
     const currentCard = Number(localStorage.getItem('currentCard')) + 1;
     localStorage.setItem('currentCard', currentCard);
 
     setAnimateQuestions(true);
     setTimeout(() => {
+      setAnimateQuestions(false);
       setDiscarded([questions[0], ...discarded]);
       setQuestions(questions.filter(question => question !== questionToRemove));
-      setAnimateQuestions(false);
     }, TIMEOUT_VALUE);
   };
 
   const moveToQuestions = questionToMove => {
-    // console.log('moveToDiscarded:', questionToMove);
     const currentCard = Number(localStorage.getItem('currentCard')) - 1;
     localStorage.setItem('currentCard', currentCard);
 
     setAnimateDiscarded(true);
     setTimeout(() => {
+      setAnimateDiscarded(false);
       setQuestions([discarded[0], ...questions]);
       setDiscarded(discarded.filter(question => question !== questionToMove));
-      setAnimateDiscarded(false);
     }, TIMEOUT_VALUE);
   };
 
@@ -73,9 +71,6 @@ const Cards = () => {
     setDiscarded([]);
     localStorage.setItem('currentCard', 0);
   };
-
-  // console.log('discarded:', discarded);
-  // console.log('questions:', questions);
 
   return (
     <Fragment>
@@ -95,14 +90,14 @@ const Cards = () => {
             paddingX="100px"
           >
             <List position="relative" width="350px" height="600px">
-              {discarded.reverse().map((card, index) => (
+              {discarded.map((card, index) => (
                 <Card
                   key={`discard ${card}`}
                   cardString={card}
                   index={index}
                   moveTo={moveToQuestions}
                   discarded
-                  shouldAnimate={animateDiscarded}
+                  shouldAnimate={index === 0 && animateDiscarded}
                 />
               ))}
             </List>
@@ -113,7 +108,7 @@ const Cards = () => {
                   cardString={card}
                   index={index}
                   moveTo={moveToDiscarded}
-                  shouldAnimate={animateQuestions}
+                  shouldAnimate={index === 0 && animateQuestions}
                 />
               ))}
             </List>

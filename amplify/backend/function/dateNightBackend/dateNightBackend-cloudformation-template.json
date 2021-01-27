@@ -69,7 +69,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-datenight-dev-163552-deployment",
-          "S3Key": "amplify-builds/dateNightBackend-733342725130396d5856-build.zip"
+          "S3Key": "amplify-builds/dateNightBackend-694f324e6d6670677561-build.zip"
         }
       }
     },

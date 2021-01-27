@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import App from './Containers/App';
 import reportWebVitals from './utils/reportWebVitals';
 import * as serviceWorker from './utils/serviceWorker';
+import theme from './theme';
 
 import Amplify from 'aws-amplify';
 import config from './aws-exports';
@@ -12,7 +13,7 @@ Amplify.configure(config);
 
 ReactDOM.render(
   <StrictMode>
-    <ColorModeScript />
+    <ColorModeScript initialColorMode={theme.config.initialColorMode} />
     <App />
   </StrictMode>,
   document.getElementById('root')
