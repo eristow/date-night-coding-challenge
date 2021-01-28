@@ -3,7 +3,7 @@ import { Heading, useColorModeValue } from '@chakra-ui/react';
 
 import MotionListItem from './MotionListItem';
 
-const DECK_DISTANCE = 437;
+const DECK_DISTANCE = 445;
 const ANIMATION_DURATION = 0.6;
 const ANIMATION_TYPE = 'spring';
 const CARD_OFFSET = 1.3;
@@ -54,14 +54,23 @@ const Card = ({
       width="350px"
       height="600px"
       padding="5px"
-      cursor="pointer"
+      cursor={index === 0 ? "pointer" : "auto"}
       bg={discarded ? DISCARDED_COLOR : QUESTIONS_COLOR}
       borderWidth="7px"
       borderStyle="solid"
       borderRadius="8px"
       borderColor={discarded ? DISCARDED_BORDER : QUESTIONS_BORDER}
     >
-      <Heading opacity={discarded ? 0.3 : 1} size="lg">
+      <Heading
+        opacity={discarded ? 0.3 : 1}
+        size="lg"
+        style={{
+          MozUserSelect: 'none',
+          WebkitUserSelect: 'none',
+          msUserSelect: 'none',
+          userSelect: 'none',
+        }}
+      >
         {cardString}
       </Heading>
     </MotionListItem>

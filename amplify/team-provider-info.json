@@ -10,6 +10,14 @@
       "StackName": "amplify-datenight-dev-163552",
       "StackId": "arn:aws:cloudformation:us-east-1:538507530778:stack/amplify-datenight-dev-163552/df436480-5cf9-11eb-aef1-12409d333fbd",
       "AmplifyAppId": "d7vp4hauoyn5j"
+    },
+    "categories": {
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d7vp4hauoyn5j",
+          "type": "cicd"
+        }
+      }
     }
   }
 }
