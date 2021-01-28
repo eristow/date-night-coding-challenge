@@ -3,7 +3,8 @@ import { Heading, useColorModeValue } from '@chakra-ui/react';
 
 import MotionListItem from './MotionListItem';
 
-const DECK_DISTANCE = 445;
+const DECK_DISTANCE_TO_DISCARD = 'calc(max(-452px, -1 * 45vw))';
+const DECK_DISTANCE_TO_QUESTIONS = 'calc(min(452px, 45vw))';
 const ANIMATION_DURATION = 0.6;
 const ANIMATION_TYPE = 'spring';
 const CARD_OFFSET = 1.3;
@@ -22,7 +23,7 @@ const Card = ({
 
   const variants = {
     animate: ({ discarded, index }) => ({
-      x: discarded ? DECK_DISTANCE : -DECK_DISTANCE,
+      x: discarded ? DECK_DISTANCE_TO_QUESTIONS : DECK_DISTANCE_TO_DISCARD,
       zIndex: 1000,
       transition: {
         type: ANIMATION_TYPE,
@@ -51,10 +52,14 @@ const Card = ({
       display="flex"
       alignItems="center"
       justifyContent="center"
-      width="350px"
-      height="600px"
-      padding="5px"
-      cursor={index === 0 ? "pointer" : "auto"}
+      width={['40vw', '45vw', '350px', '350px']}
+      height={['50vh', '55vh', '60vh', '65vh']}
+      minWidth="150px"
+      maxWidth="350px"
+      minHeight="200px"
+      maxHeight="600px"
+      paddingX="5px"
+      cursor={index === 0 ? 'pointer' : 'auto'}
       bg={discarded ? DISCARDED_COLOR : QUESTIONS_COLOR}
       borderWidth="7px"
       borderStyle="solid"
@@ -63,7 +68,7 @@ const Card = ({
     >
       <Heading
         opacity={discarded ? 0.3 : 1}
-        size="lg"
+        fontSize={[17, 20, 23, 35]}
         style={{
           MozUserSelect: 'none',
           WebkitUserSelect: 'none',

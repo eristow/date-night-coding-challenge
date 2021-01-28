@@ -83,13 +83,21 @@ const Cards = () => {
             position="relative"
             display="flex"
             alignItems="center"
-            justifyContent="space-between"
-            height="80vh"
+            justifyContent="space-evenly"
+            height="70vh"
             maxWidth="1000px"
             marginX="auto"
-            paddingX="100px"
+            paddingX="auto"
           >
-            <List position="relative" width="350px" height="600px">
+            <List
+              position="relative"
+              width={['40vw', '45vw', '350px', '350px']}
+              height={['50vh', '55vh', '60vh', '65vh']}
+              minWidth="150px"
+              maxWidth="350px"
+              minHeight="200px"
+              maxHeight="600px"
+            >
               {discarded.map((card, index) => (
                 <Card
                   key={`discard ${card}`}
@@ -101,7 +109,15 @@ const Cards = () => {
                 />
               ))}
             </List>
-            <List position="relative" width="350px" height="600px">
+            <List
+              position="relative"
+              width={['40vw', '45vw', '350px', '350px']}
+              height={['50vh', '55vh', '60vh', '65vh']}
+              minWidth="150px"
+              maxWidth="350px"
+              minHeight="200px"
+              maxHeight="600px"
+            >
               {questions.map((card, index) => (
                 <Card
                   key={`question ${card}`}
